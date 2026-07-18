@@ -3,6 +3,10 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 require __DIR__ . '/config/database.php';
 
+header('Cache-Control: no-cache, no-store, must-revalidate');
+header('Pragma: no-cache');
+header('Expires: 0');
+
 spl_autoload_register(function ($class) {
     $prefix = 'App\\';
     $baseDir = __DIR__ . '/app/';

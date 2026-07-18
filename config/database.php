@@ -22,3 +22,6 @@ define('ADDRESS', 'Vía de Evitamiento N.° 552, Sector La Encalada del Golf, Tr
 define('FACEBOOK', 'https://www.facebook.com/drofarsac/');
 define('INSTAGRAM', 'https://www.instagram.com/drofarsac/');
 define('LINKEDIN', 'https://www.linkedin.com/company/drofar-sac/');
+
+$gitHead = __DIR__ . '/../.git/refs/heads/main';
+define('ASSET_VERSION', file_exists($gitHead) ? trim(file_get_contents($gitHead)) : (string)filemtime(__FILE__));

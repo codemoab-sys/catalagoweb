@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="<?= BASE_URL ?>public/css/admin.css?v=<?= filemtime(__DIR__.'/../../../public/css/admin.css') ?>">
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/css/admin.css?v=<?= ASSET_VERSION ?>">
 </head>
 <body>
 <div class="d-flex" style="min-height:100vh">
@@ -57,6 +57,6 @@
     });
 })();
 </script>
-<script src="<?= BASE_URL ?>public/js/admin.js?v=<?= filemtime(__DIR__.'/../../../public/js/admin.js') ?>"></script>
+<script src="<?= BASE_URL ?>public/js/admin.js?v=<?= ASSET_VERSION ?>"></script>
 </body>
 </html>

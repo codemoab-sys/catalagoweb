@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
     <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@2.7.2/css/lightgallery-bundle.min.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>public/css/catalog.css?v=<?= filemtime(__DIR__.'/../../../public/css/catalog.css') ?>">
+    <link rel="stylesheet" href="<?= BASE_URL ?>public/css/catalog.css?v=<?= ASSET_VERSION ?>">
 </head>
 <body>
 
@@ -139,6 +139,6 @@
 <script src="https://cdn.jsdelivr.net/npm/lightgallery@2.7.2/lightgallery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lightgallery@2.7.2/plugins/zoom/lg-zoom.min.js"></script>
 <script>var CATALOGO_BASE_URL = '<?= BASE_URL ?>';</script>
-<script src="<?= BASE_URL ?>public/js/catalog.js?v=<?= filemtime(__DIR__.'/../../../public/js/catalog.js') ?>"></script>
+<script src="<?= BASE_URL ?>public/js/catalog.js?v=<?= ASSET_VERSION ?>"></script>
 </body>
 </html>
