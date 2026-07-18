@@ -35,15 +35,25 @@ class AdminController extends Controller
         $pass = $_POST['pass'] ?? '';
 
         $usuario = (new Usuario())->queryFirst(
-            "SELECT * FROM usuarios WHERE (email = ? OR nombre = ?) AND estado = 1 LIMIT 1",
-            [$user, $user]
+            "SELECT * FROM usuarios WHERE estado = 1 AND (email = ? OR nombre = ? OR usuario = ?) LIMIT 1",
+            [$user, $user, $user]
         );
 
-        if ($usuario && password_verify($pass, $usuario['password'])) {
-            $_SESSION['admin'] = true;
-            $_SESSION['admin_user'] = $usuario['nombre'];
-            $_SESSION['admin_rol'] = $usuario['rol'];
-            $this->redirect('admin');
+        if ($usuario) {
+            if (password_verify($pass, $usuario['password'])) {
+                $_SESSION['admin'] = true;
+                $_SESSION['admin_user'] = $usuario['nombre'];
+                $_SESSION['admin_rol'] = $usuario['rol'];
+                $this->redirect('admin');
+            }
+            if (md5($pass) === $usuario['password']) {
+                $hash = password_hash($pass, PASSWORD_DEFAULT);
+                (new Usuario())->update($usuario['id'], ['password' => $hash]);
+                $_SESSION['admin'] = true;
+                $_SESSION['admin_user'] = $usuario['nombre'];
+                $_SESSION['admin_rol'] = $usuario['rol'];
+                $this->redirect('admin');
+            }
         }
 
         $this->render('admin/login', ['error' => 'Credenciales incorrectas']);
