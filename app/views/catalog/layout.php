@@ -72,7 +72,6 @@
                         </ul>
                     </li>
                     <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>buscar">Productos</a></li>
-                    <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>buenas-practicas">Buenas Prácticas</a></li>
                 </ul>
                 <div class="d-flex align-items-center gap-2">
                     <div class="search-box">
@@ -118,7 +117,6 @@
                 <ul class="list-unstyled text-white-50 small">
                     <li class="mb-2"><a href="<?= BASE_URL ?>" class="text-white-50 text-decoration-none">Inicio</a></li>
                     <li class="mb-2"><a href="<?= BASE_URL ?>buscar" class="text-white-50 text-decoration-none">Productos</a></li>
-                    <li class="mb-2"><a href="<?= BASE_URL ?>buenas-practicas" class="text-white-50 text-decoration-none">Buenas Prácticas</a></li>
                     <?php if (isset($familias)): ?>
                         <?php foreach (array_slice($familias, 0, 4) as $f): ?>
                             <li class="mb-2"><a href="<?= BASE_URL ?>categoria/<?= $f['slug'] ?>" class="text-white-50 text-decoration-none"><?= htmlspecialchars($f['nombre']) ?></a></li>
@@ -140,6 +138,7 @@
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lightgallery@2.7.2/lightgallery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lightgallery@2.7.2/plugins/zoom/lg-zoom.min.js"></script>
+<script>var CATALOGO_BASE_URL = '<?= BASE_URL ?>';</script>
 <script src="<?= BASE_URL ?>public/js/catalog.js?v=<?= filemtime(__DIR__.'/../../../public/js/catalog.js') ?>"></script>
 </body>
 </html>

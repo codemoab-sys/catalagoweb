@@ -1,4 +1,4 @@
-const BASE_URL = document.querySelector('base')?.getAttribute('href') || 'http://localhost/catalogopdaweb/';
+const BASE_URL = typeof CATALOGO_BASE_URL !== 'undefined' ? CATALOGO_BASE_URL : '/';
 const WHATSAPP_NUM = '51999000000';
 
 $(function() {
