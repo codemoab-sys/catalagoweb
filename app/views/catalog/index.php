@@ -47,9 +47,17 @@
             <h2 class="fw-bold">Familias de Productos</h2>
             <p class="text-muted">Explora nuestras categorías especializadas</p>
         </div>
-        <div class="row g-3">
-            <?php foreach ($familias as $f): ?>
-                <div class="col-6 col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="<?=($f['orden']%4)*50?>">
+        <div class="row mb-3">
+            <div class="col-md-5 mx-auto">
+                <div class="input-group">
+                    <span class="input-group-text bg-white"><i class="bi bi-search text-muted"></i></span>
+                    <input type="text" id="familiaSearch" class="form-control" placeholder="Buscar familia..." autocomplete="off">
+                </div>
+            </div>
+        </div>
+        <div class="row g-3" id="familiasGrid">
+            <?php foreach ($familias as $i => $f): ?>
+                <div class="col-6 col-md-4 col-lg-3 familia-item" data-nombre="<?=htmlspecialchars(mb_strtolower($f['nombre'], 'UTF-8'))?>" data-index="<?=$i?>" data-aos="fade-up" data-aos-delay="<?=($f['orden']%4)*50?>">
                     <a href="<?=BASE_URL?>categoria/<?=$f['slug']?>" class="text-decoration-none">
                         <div class="card familia-card border-0 shadow-sm h-100">
                             <div class="card-body text-center p-4">
@@ -65,6 +73,13 @@
                 </div>
             <?php endforeach; ?>
         </div>
+        <?php $totalFamilias = count($familias); if ($totalFamilias > 12): ?>
+        <div class="d-flex justify-content-center align-items-center gap-2 mt-4" id="familiasPagination">
+            <button class="btn btn-outline-primary btn-sm rounded-circle px-2" id="famPrevPage" disabled><i class="bi bi-chevron-left"></i></button>
+            <span class="small text-muted mx-2" id="famPageInfo">1 / <?=ceil($totalFamilias/12)?></span>
+            <button class="btn btn-outline-primary btn-sm rounded-circle px-2" id="famNextPage"><i class="bi bi-chevron-right"></i></button>
+        </div>
+        <?php endif; ?>
     </div>
 </section>
 

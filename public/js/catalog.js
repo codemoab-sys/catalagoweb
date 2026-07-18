@@ -112,4 +112,66 @@ $(function() {
         $('.product-gallery .main-image img').attr('src', src);
         $('.product-gallery .main-image').attr('href', src);
     });
+
+    // ===== CATEGORIA DROPDOWN SEARCH =====
+    const $catSearch = $('#categoriaSearch');
+    if ($catSearch.length) {
+        $catSearch.on('input', function() {
+            const q = $(this).val().toLowerCase().trim();
+            $('#categoriaList .categoria-item').each(function() {
+                const name = $(this).data('nombre') || '';
+                $(this).toggle(name.indexOf(q) !== -1);
+            });
+        });
+        $catSearch.on('click', function(e) { e.stopPropagation(); });
+    }
+
+    // ===== FAMILIAS SEARCH + PAGINATION =====
+    const $famItems = $('.familia-item');
+    const perPage = 12;
+    let famPage = 1;
+    let famFiltered = $famItems;
+
+    function getFilteredItems() {
+        const q = $('#familiaSearch').val().toLowerCase().trim();
+        if (!q) return $famItems;
+        return $famItems.filter(function() {
+            return $(this).data('nombre').indexOf(q) !== -1;
+        });
+    }
+
+    function showFamPage(page, filtered) {
+        famFiltered = filtered;
+        const total = filtered.length;
+        const totalPages = Math.ceil(total / perPage) || 1;
+        $famItems.hide();
+        filtered.each(function(i) {
+            const start = (page - 1) * perPage;
+            const end = start + perPage;
+            if (i >= start && i < end) $(this).show();
+        });
+        const showPagination = totalPages > 1;
+        $('#familiasPagination').toggle(showPagination);
+        if (showPagination) {
+            $('#famPageInfo').text(page + ' / ' + totalPages);
+            $('#famPrevPage').prop('disabled', page === 1);
+            $('#famNextPage').prop('disabled', page === totalPages);
+        }
+    }
+
+    const initialTotal = $famItems.length;
+    if (initialTotal > 1) {
+        showFamPage(1, $famItems);
+        $('#famPrevPage').on('click', function() {
+            if (famPage > 1) { famPage--; showFamPage(famPage, famFiltered); }
+        });
+        $('#famNextPage').on('click', function() {
+            const totalPages = Math.ceil(famFiltered.length / perPage) || 1;
+            if (famPage < totalPages) { famPage++; showFamPage(famPage, famFiltered); }
+        });
+        $('#familiaSearch').on('input', function() {
+            famPage = 1;
+            showFamPage(1, getFilteredItems());
+        });
+    }
 });

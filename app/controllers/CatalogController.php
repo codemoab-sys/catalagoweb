@@ -6,6 +6,7 @@ use App\Models\Familia;
 use App\Models\Marca;
 use App\Models\Producto;
 use App\Models\Banner;
+use App\Models\BuenaPractica;
 
 class CatalogController extends Controller
 {
@@ -98,5 +99,39 @@ class CatalogController extends Controller
         $search = $_GET['q'] ?? '';
         $results = $producto->search($search);
         $this->json($results);
+    }
+
+    public function buenasPracticas()
+    {
+        $search = $_GET['q'] ?? '';
+        $categoria = $_GET['categoria'] ?? '';
+        $model = new BuenaPractica();
+
+        if ($search || $categoria) {
+            $sql = "SELECT * FROM buenas_practicas WHERE estado = 1";
+            $params = [];
+            if ($search) {
+                $sql .= " AND (titulo LIKE ? OR descripcion LIKE ?)";
+                $like = "%$search%";
+                $params[] = $like;
+                $params[] = $like;
+            }
+            if ($categoria) {
+                $sql .= " AND categoria = ?";
+                $params[] = $categoria;
+            }
+            $sql .= " ORDER BY created_at DESC";
+            $items = $model->query($sql, $params);
+        } else {
+            $items = $model->where('estado', 1, 'created_at DESC');
+        }
+
+        $familias = (new Familia())->activas();
+        $this->render('catalog/buenas-practicas', [
+            'items' => $items,
+            'search' => $search,
+            'selectedCategoria' => $categoria,
+            'familias' => $familias,
+        ]);
     }
 }

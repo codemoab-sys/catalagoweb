@@ -27,6 +27,7 @@ $router->get('/categoria/{slug}', [CatalogController::class, 'categoria']);
 $router->get('/producto/{id}', [CatalogController::class, 'detalle']);
 $router->get('/buscar', [CatalogController::class, 'search']);
 $router->get('/api/buscar', [CatalogController::class, 'apiSearch']);
+$router->get('/buenas-practicas', [CatalogController::class, 'buenasPracticas']);
 
 // Admin
 $router->get('/admin', [AdminController::class, 'dashboard']);

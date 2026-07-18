@@ -55,17 +55,24 @@
                     <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>">Inicio</a></li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Categorías</a>
-                        <ul class="dropdown-menu shadow-sm border-0 rounded-3">
+                        <ul class="dropdown-menu shadow-sm border-0 rounded-3" id="categoriaMenu">
+                            <li class="px-3 py-2" style="min-width:240px">
+                                <input type="text" id="categoriaSearch" class="form-control form-control-sm" placeholder="Buscar categoría..." autocomplete="off">
+                            </li>
+                            <li><hr class="dropdown-divider my-1"></li>
+                            <div id="categoriaList">
                             <?php if (isset($familias)): ?>
                                 <?php foreach ($familias as $f): ?>
-                                    <li><a class="dropdown-item py-2" href="<?= BASE_URL ?>categoria/<?= $f['slug'] ?>">
+                                    <li class="categoria-item" data-nombre="<?=htmlspecialchars(mb_strtolower($f['nombre'],'UTF-8'))?>"><a class="dropdown-item py-2" href="<?= BASE_URL ?>categoria/<?= $f['slug'] ?>">
                                         <i class="bi bi-dot text-primary me-1"></i> <?= htmlspecialchars($f['nombre']) ?>
                                     </a></li>
                                 <?php endforeach; ?>
                             <?php endif; ?>
+                            </div>
                         </ul>
                     </li>
                     <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>buscar">Productos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="<?= BASE_URL ?>buenas-practicas">Buenas Prácticas</a></li>
                 </ul>
                 <div class="d-flex align-items-center gap-2">
                     <div class="search-box">
@@ -111,6 +118,7 @@
                 <ul class="list-unstyled text-white-50 small">
                     <li class="mb-2"><a href="<?= BASE_URL ?>" class="text-white-50 text-decoration-none">Inicio</a></li>
                     <li class="mb-2"><a href="<?= BASE_URL ?>buscar" class="text-white-50 text-decoration-none">Productos</a></li>
+                    <li class="mb-2"><a href="<?= BASE_URL ?>buenas-practicas" class="text-white-50 text-decoration-none">Buenas Prácticas</a></li>
                     <?php if (isset($familias)): ?>
                         <?php foreach (array_slice($familias, 0, 4) as $f): ?>
                             <li class="mb-2"><a href="<?= BASE_URL ?>categoria/<?= $f['slug'] ?>" class="text-white-50 text-decoration-none"><?= htmlspecialchars($f['nombre']) ?></a></li>
