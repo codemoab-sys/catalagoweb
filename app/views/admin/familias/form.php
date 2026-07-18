@@ -10,7 +10,7 @@
             <div class="row g-3">
                 <div class="col-md-6"><label class="form-label">Nombre *</label><input type="text" name="nombre" class="form-control" value="<?=htmlspecialchars($familia['nombre']??'')?>" required></div>
                 <div class="col-md-2"><label class="form-label">Orden</label><input type="number" name="orden" class="form-control" value="<?=$familia['orden']??0?>"></div>
-                <div class="col-md-2"><label class="form-label">Color</label><input type="color" name="color" class="form-control form-control-color" value="<?=$familia['color']??'#009933'?>"></div>
+                <div class="col-md-2"><label class="form-label">Color</label><input type="color" name="color" class="form-control form-control-color" value="<?=htmlspecialchars($familia['color']??'#009933')?>"></div>
                 <div class="col-md-2"><label class="form-label">Estado</label><select name="estado" class="form-select"><option value="1" <?=($familia['estado']??1)==1?'selected':''?>>Activo</option><option value="0" <?=($familia['estado']??1)==0?'selected':''?>>Inactivo</option></select></div>
                 <div class="col-12"><label class="form-label">Descripción</label><textarea name="descripcion" class="form-control" rows="3"><?=htmlspecialchars($familia['descripcion']??'')?></textarea></div>
                 <div class="col-md-6"><label class="form-label">Imagen</label><input type="file" name="imagen" class="form-control" accept="image/*"><?php if($isEdit&&$familia['imagen']):?><div class="mt-2"><img src="<?=BASE_URL.$familia['imagen']?>" height="60"></div><?php endif;?></div>

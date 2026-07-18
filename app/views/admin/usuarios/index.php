@@ -17,7 +17,7 @@
                         <td><?= $u['id'] ?></td>
                         <td><strong><?= htmlspecialchars($u['nombre']) ?></strong></td>
                         <td><?= htmlspecialchars($u['email']) ?></td>
-                        <td><span class="badge bg-info"><?= $u['rol'] ?></span></td>
+                        <td><span class="badge bg-info"><?= htmlspecialchars($u['rol']) ?></span></td>
                         <td><span class="badge bg-<?= $u['estado'] ? 'success' : 'secondary' ?>"><?= $u['estado'] ? 'Activo' : 'Inactivo' ?></span></td>
                         <td>
                             <a href="<?= BASE_URL ?>admin/usuarios/editar/<?= $u['id'] ?>" class="btn btn-sm btn-warning"><i class="bi bi-pencil"></i></a>

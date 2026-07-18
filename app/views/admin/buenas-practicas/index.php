@@ -22,7 +22,7 @@
                         </div>
                         <p class="card-text small text-muted"><?=htmlspecialchars(mb_substr($bp['descripcion']??'', 0, 120))?></p>
                         <div class="d-flex justify-content-between align-items-center">
-                            <small class="text-muted"><?=$bp['categoria']?></small>
+                            <small class="text-muted"><?=htmlspecialchars($bp['categoria'])?></small>
                             <div>
                                 <button class="btn btn-sm btn-warning btn-modal-edit" data-modal="#modalBP" data-id="<?=$bp['id']?>" data-url="admin/buenas-practicas/data/"><i class="bi bi-pencil"></i></button>
                                 <button class="btn btn-sm btn-danger delete-bp" data-id="<?=$bp['id']?>"><i class="bi bi-trash"></i></button>

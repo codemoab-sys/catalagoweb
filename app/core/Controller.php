@@ -1,6 +1,10 @@
 <?php
 namespace App\Core;
 
+function h($str) {
+    return htmlspecialchars($str ?? '', ENT_QUOTES, 'UTF-8');
+}
+
 class Controller
 {
     protected function render($view, $data = [])
