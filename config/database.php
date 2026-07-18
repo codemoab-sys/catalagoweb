@@ -1,9 +1,17 @@
 <?php
-define('DB_HOST', '184.107.5.178');
-define('DB_NAME', 'avicola1_catalogodrofar');
-define('DB_USER', 'avicola1_userfacturacion');
-define('DB_PASS', 'Exenk123@@@pro9');
-define('DB_CHARSET', 'utf8mb4');
+$localConfig = __DIR__ . '/database.local.php';
+$exampleConfig = __DIR__ . '/database.example.php';
+if (file_exists($localConfig)) {
+    require $localConfig;
+} elseif (file_exists($exampleConfig)) {
+    require $exampleConfig;
+} else {
+    define('DB_HOST', 'localhost');
+    define('DB_NAME', 'micatalogo');
+    define('DB_USER', 'root');
+    define('DB_PASS', '');
+    define('DB_CHARSET', 'utf8mb4');
+}
 
 $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
 $host = $_SERVER['HTTP_HOST'] ?? 'localhost';

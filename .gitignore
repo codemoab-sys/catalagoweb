@@ -1,4 +1,4 @@
-config/database.php
+config/database.local.php
 public/uploads/*
 !public/uploads/.gitkeep
 .env
