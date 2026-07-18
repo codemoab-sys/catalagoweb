@@ -33,10 +33,19 @@ class AdminController extends Controller
     {
         $user = $_POST['user'] ?? '';
         $pass = $_POST['pass'] ?? '';
-        if ($user === 'admin' && $pass === 'admin123') {
+
+        $usuario = (new Usuario())->queryFirst(
+            "SELECT * FROM usuarios WHERE (email = ? OR nombre = ?) AND estado = 1 LIMIT 1",
+            [$user, $user]
+        );
+
+        if ($usuario && password_verify($pass, $usuario['password'])) {
             $_SESSION['admin'] = true;
+            $_SESSION['admin_user'] = $usuario['nombre'];
+            $_SESSION['admin_rol'] = $usuario['rol'];
             $this->redirect('admin');
         }
+
         $this->render('admin/login', ['error' => 'Credenciales incorrectas']);
     }
 
