@@ -80,7 +80,7 @@
                         <div id="searchResults" class="search-results shadow-lg"></div>
                     </div>
                     <a href="https://wa.me/<?= WHATSAPP ?>?text=<?= urlencode(WHATSAPP_MSG) ?>" target="_blank" class="btn btn-whatsapp-header">
-                        <i class="bi bi-whatsapp me-1"></i> WhatsApp
+                        <i class="bi bi-whatsapp"></i>
                     </a>
                 </div>
             </div>
