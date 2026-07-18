@@ -7,11 +7,7 @@ if (file_exists($localConfig)) {
     require $exampleConfig;
 }
 if (!defined('DB_HOST')) {
-    define('DB_HOST', '184.107.5.178');
-    define('DB_NAME', 'avicola1_catalogodrofar');
-    define('DB_USER', 'avicola1_userfacturacion');
-    define('DB_PASS', 'Exenk123@@@pro9');
-    define('DB_CHARSET', 'utf8mb4');
+    die('Configuración de base de datos no encontrada. Crea config/database.local.php basado en config/database.example.php');
 }
 
 $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
