@@ -7,6 +7,7 @@
 <div class="card">
     <div class="card-body">
         <form method="POST" action="<?= $isEdit ? BASE_URL . 'admin/usuarios/editar/' . $usuario['id'] : BASE_URL . 'admin/usuarios/crear' ?>">
+            <?= csrf_field() ?>
             <div class="row g-3">
                 <div class="col-md-6"><label class="form-label">Nombre *</label><input type="text" name="nombre" class="form-control" value="<?= htmlspecialchars($usuario['nombre'] ?? '') ?>" required></div>
                 <div class="col-md-6"><label class="form-label">Email *</label><input type="email" name="email" class="form-control" value="<?= htmlspecialchars($usuario['email'] ?? '') ?>" required></div>

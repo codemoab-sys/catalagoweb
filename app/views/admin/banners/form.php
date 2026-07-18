@@ -7,6 +7,7 @@
 <div class="card">
     <div class="card-body">
         <form method="POST" enctype="multipart/form-data" action="<?= $isEdit ? BASE_URL . 'admin/banners/editar/' . $banner['id'] : BASE_URL . 'admin/banners/crear' ?>">
+            <?= csrf_field() ?>
             <div class="row g-3">
                 <div class="col-md-8"><label class="form-label">Título</label><input type="text" name="titulo" class="form-control" value="<?= htmlspecialchars($banner['titulo'] ?? '') ?>"></div>
                 <div class="col-md-2"><label class="form-label">Orden</label><input type="number" name="orden" class="form-control" value="<?= $banner['orden'] ?? 0 ?>"></div>

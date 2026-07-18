@@ -7,6 +7,7 @@
 <div class="card">
     <div class="card-body">
         <form method="POST" enctype="multipart/form-data" action="<?= $isEdit ? BASE_URL.'admin/marcas/editar/'.$marca['id'] : BASE_URL.'admin/marcas/crear' ?>">
+            <?= csrf_field() ?>
             <div class="row g-3">
                 <div class="col-md-8"><label class="form-label">Nombre *</label><input type="text" name="nombre" class="form-control" value="<?=htmlspecialchars($marca['nombre']??'')?>" required></div>
                 <div class="col-md-4"><label class="form-label">Estado</label><select name="estado" class="form-select"><option value="1" <?=($marca['estado']??1)==1?'selected':''?>>Activo</option><option value="0" <?=($marca['estado']??1)==0?'selected':''?>>Inactivo</option></select></div>

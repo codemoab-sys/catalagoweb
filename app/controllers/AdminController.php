@@ -15,6 +15,21 @@ class AdminController extends Controller
     public function __construct()
     {
         session_start();
+        $this->generateCsrfToken();
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_SESSION['admin'])) {
+            if (!isset($_POST['user']) || !isset($_POST['pass'])) {
+                $this->render('admin/login');
+                exit;
+            }
+            return;
+        }
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['admin'])) {
+            $uri = $_SERVER['REQUEST_URI'] ?? '';
+            $isJson = strpos($uri, '/data/') !== false || strpos($uri, '/guardar') !== false || strpos($uri, '/eliminar') !== false;
+            if (!$isJson) {
+                $this->validateCsrfToken();
+            }
+        }
         if (!isset($_SESSION['admin'])) {
             $uri = $_SERVER['REQUEST_URI'] ?? '';
             $isAjax = strpos($uri, '/data/') !== false || strpos($uri, '/guardar') !== false || strpos($uri, '/eliminar') !== false;
@@ -22,15 +37,15 @@ class AdminController extends Controller
                 $this->json(['error' => 'No autorizado'], 401);
                 exit;
             }
-            if ($_SERVER['REQUEST_METHOD'] !== 'POST' || (!isset($_POST['user']) || !isset($_POST['pass']))) {
-                $this->render('admin/login');
-                exit;
-            }
+            $this->render('admin/login');
+            exit;
         }
     }
 
     public function login()
     {
+        $this->checkRateLimit('login', 5, 60);
+
         $user = $_POST['user'] ?? '';
         $pass = $_POST['pass'] ?? '';
 
@@ -41,12 +56,14 @@ class AdminController extends Controller
 
         if ($usuario) {
             if (password_verify($pass, $usuario['password'])) {
+                $this->resetRateLimit('login');
                 $_SESSION['admin'] = true;
                 $_SESSION['admin_user'] = $usuario['nombre'];
                 $_SESSION['admin_rol'] = $usuario['rol'];
                 $this->redirect('admin');
             }
             if (md5($pass) === $usuario['password']) {
+                $this->resetRateLimit('login');
                 $hash = password_hash($pass, PASSWORD_DEFAULT);
                 (new Usuario())->update($usuario['id'], ['password' => $hash]);
                 $_SESSION['admin'] = true;

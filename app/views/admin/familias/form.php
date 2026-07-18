@@ -7,6 +7,7 @@
 <div class="card">
     <div class="card-body">
         <form method="POST" enctype="multipart/form-data" action="<?= $isEdit ? BASE_URL.'admin/familias/editar/'.$familia['id'] : BASE_URL.'admin/familias/crear' ?>">
+            <?= csrf_field() ?>
             <div class="row g-3">
                 <div class="col-md-6"><label class="form-label">Nombre *</label><input type="text" name="nombre" class="form-control" value="<?=htmlspecialchars($familia['nombre']??'')?>" required></div>
                 <div class="col-md-2"><label class="form-label">Orden</label><input type="number" name="orden" class="form-control" value="<?=$familia['orden']??0?>"></div>

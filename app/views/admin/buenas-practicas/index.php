@@ -52,6 +52,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <form class="modal-form" method="POST" enctype="multipart/form-data" action="<?=BASE_URL?>admin/buenas-practicas/guardar">
+                <?= csrf_field() ?>
                 <div class="modal-header"><h5 class="modal-title">Buena Práctica</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
                 <div class="modal-body">
                     <input type="hidden" name="id">

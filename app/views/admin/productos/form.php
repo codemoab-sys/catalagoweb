@@ -11,6 +11,7 @@ $isEdit = isset($producto); ?>
 <div class="card border-0 shadow-sm">
     <div class="card-body">
         <form method="POST" enctype="multipart/form-data" action="<?= $isEdit ? BASE_URL.'admin/productos/editar/'.$producto['id'] : BASE_URL.'admin/productos/crear' ?>">
+            <?= csrf_field() ?>
             <ul class="nav nav-tabs mb-4" id="productTabs">
                 <li class="nav-item"><a class="nav-link active" href="#general" data-bs-toggle="tab"><i class="bi bi-info-circle me-1"></i>General</a></li>
                 <li class="nav-item"><a class="nav-link" href="#info" data-bs-toggle="tab"><i class="bi bi-file-text me-1"></i>Información</a></li>
