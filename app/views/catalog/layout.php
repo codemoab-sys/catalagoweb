@@ -47,7 +47,7 @@
             <a class="navbar-brand fw-bold" href="<?= BASE_URL ?>">
                 <img src="<?= BASE_URL ?>DROFARSAC-LOGO.png" alt="<?= SITE_NAME ?>" height="45" class="me-2">
             </a>
-            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Abrir menú">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarMain">

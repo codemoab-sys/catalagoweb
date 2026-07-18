@@ -89,6 +89,10 @@ $(function() {
 
     $(document).on('click', function(e) {
         if (!$(e.target).closest('.search-box').length) searchResults.removeClass('show');
+        var $navbar = $('#navbarMain');
+        if ($navbar.hasClass('show') && !$(e.target).closest('.navbar').length) {
+            $navbar.collapse('hide');
+        }
     });
 
     // ===== SMOOTH SCROLL =====
