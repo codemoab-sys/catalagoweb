@@ -5,11 +5,12 @@ if (file_exists($localConfig)) {
     require $localConfig;
 } elseif (file_exists($exampleConfig)) {
     require $exampleConfig;
-} else {
-    define('DB_HOST', 'localhost');
-    define('DB_NAME', 'micatalogo');
-    define('DB_USER', 'root');
-    define('DB_PASS', '');
+}
+if (!defined('DB_HOST')) {
+    define('DB_HOST', '184.107.5.178');
+    define('DB_NAME', 'avicola1_catalogodrofar');
+    define('DB_USER', 'avicola1_userfacturacion');
+    define('DB_PASS', 'Exenk123@@@pro9');
     define('DB_CHARSET', 'utf8mb4');
 }
 
