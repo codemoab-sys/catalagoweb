@@ -14,7 +14,11 @@ class Controller
         if (file_exists($viewPath)) {
             require $viewPath;
         } else {
-            die("Vista no encontrada: " . $view);
+            if (function_exists('error_log')) {
+                error_log("[Controller] Vista no encontrada: {$viewPath}");
+            }
+            http_response_code(500);
+            echo 'Error interno del servidor.';
         }
     }
 
@@ -30,6 +34,12 @@ class Controller
     {
         header('Location: ' . BASE_URL . $url);
         exit;
+    }
+
+    protected function model($name)
+    {
+        $class = "App\\Models\\{$name}";
+        return new $class();
     }
 
     protected function uploadFile($file, $folder = 'productos')

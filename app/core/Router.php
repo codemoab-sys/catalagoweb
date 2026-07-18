@@ -49,6 +49,9 @@ class Router
         }
 
         http_response_code(404);
-        echo '404 Not Found';
+        if (function_exists('error_log')) {
+            error_log("[Router] 404: {$method} {$uri}");
+        }
+        echo '<h1>404 — Página no encontrada</h1>';
     }
 }

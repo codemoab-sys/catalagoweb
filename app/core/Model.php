@@ -105,4 +105,19 @@ class Model
         $stmt->execute($params);
         return $stmt->fetch();
     }
+
+    public function beginTransaction()
+    {
+        Database::beginTransaction();
+    }
+
+    public function commit()
+    {
+        Database::commit();
+    }
+
+    public function rollback()
+    {
+        Database::rollback();
+    }
 }

@@ -25,6 +25,19 @@ use App\Controllers\CatalogController;
 
 $router = new Router();
 
+set_exception_handler(function ($e) {
+    if (function_exists('error_log')) {
+        error_log('[Fatal] ' . $e->getMessage() . ' in ' . $e->getFile() . ':' . $e->getLine());
+    }
+    http_response_code(500);
+    if (ini_get('display_errors')) {
+        echo '<h1>Error interno</h1><p>' . htmlspecialchars($e->getMessage()) . '</p>';
+    } else {
+        echo '<h1>Error interno del servidor</h1>';
+    }
+    exit;
+});
+
 // Catalog
 $router->get('/', [CatalogController::class, 'index']);
 $router->get('/categoria/{slug}', [CatalogController::class, 'categoria']);
