@@ -31,61 +31,66 @@
                     <?php endforeach; ?>
                 </select>
             </div>
-            <div class="col-md-2">
-                <button type="submit" class="btn btn-primary btn-lg w-100 rounded-pill"><i class="bi bi-search me-1"></i> Buscar</button>
+            <div class="col-md-2 d-flex gap-1">
+                <button type="submit" class="btn btn-primary btn-lg rounded-pill flex-fill d-none"><i class="bi bi-search me-1"></i> Buscar</button>
+                <a href="<?=BASE_URL?>buscar" class="btn btn-outline-secondary btn-lg rounded-pill flex-fill <?=($search||$selectedFamilia||$selectedMarca)?'':'d-none'?>" id="clearSearchBtn"><i class="bi bi-x-lg"></i></a>
             </div>
         </form>
 
-        <p class="text-muted mb-3"><?=$total?> resultado(s) — Página <?=$currentPage?> de <?=$totalPages?></p>
-
-        <?php if (empty($productos)): ?>
-            <div class="text-center py-5" data-aos="fade-up">
-                <i class="bi bi-search display-1 text-muted"></i>
-                <h4 class="mt-3">No se encontraron productos</h4>
-                <a href="<?=BASE_URL?>buscar" class="btn btn-primary mt-3 rounded-pill">Limpiar Filtros</a>
-            </div>
-        <?php else: ?>
-            <div class="row g-3">
-                <?php foreach ($productos as $p): ?>
-                    <div class="col-6 col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="<?=($p['id']%4)*60?>">
-                        <div class="card product-card border-0 shadow-sm h-100">
-                            <div class="position-relative overflow-hidden">
-                                <?php if($p['nuevo']):?><span class="badge bg-danger position-absolute top-0 end-0 m-2 z-1">Nuevo</span><?php endif;?>
-                                <a href="<?=BASE_URL?>producto/<?=$p['id']?>">
-                                    <?php if($p['imagen_principal']):?><img src="<?=BASE_URL.$p['imagen_principal']?>" class="card-img-top" alt="<?=htmlspecialchars($p['nombre_comercial'])?>" loading="lazy">
-                                    <?php else:?><div class="bg-light d-flex align-items-center justify-content-center" style="height:200px"><i class="bi bi-image text-muted display-4"></i></div><?php endif;?>
-                                </a>
-                            </div>
-                            <div class="card-body d-flex flex-column">
-                                <small class="text-primary fw-bold"><?=htmlspecialchars($p['codigo']??'')?></small>
-                                <h6 class="fw-bold mt-1"><?=htmlspecialchars($p['nombre_comercial'])?></h6>
-                                <small class="text-muted mb-2"><?=htmlspecialchars($p['familia_nombre']??'')?><?=$p['marca_nombre']?' | '.htmlspecialchars($p['marca_nombre']):''?></small>
-                                <p class="text-muted small flex-grow-1"><?=htmlspecialchars(substr($p['descripcion']??'',0,80))?></p>
-                                <a href="<?=BASE_URL?>producto/<?=$p['id']?>" class="btn btn-outline-primary btn-sm w-100 rounded-pill">Ver Detalle</a>
-                            </div>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
-            </div>
-            <?php if ($totalPages > 1): ?>
-            <div class="d-flex justify-content-center align-items-center gap-2 mt-4">
-                <?php
-                $buildUrl = function($p) use ($search, $selectedFamilia, $selectedMarca) {
-                    $params = ['page' => $p];
-                    if ($search) $params['q'] = $search;
-                    if ($selectedFamilia) $params['familia'] = $selectedFamilia;
-                    if ($selectedMarca) $params['marca'] = $selectedMarca;
-                    return BASE_URL . 'buscar?' . http_build_query($params);
-                };
-                ?>
-                <a href="<?=$buildUrl($currentPage-1)?>" class="btn btn-outline-primary btn-sm rounded-circle px-2 <?=$currentPage<=1?'disabled':''?>"><i class="bi bi-chevron-left"></i></a>
-                <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-                    <a href="<?=$buildUrl($i)?>" class="btn btn-sm rounded-circle px-2 <?=$i==$currentPage?'btn-primary':'btn-outline-primary'?>"><?=$i?></a>
-                <?php endfor; ?>
-                <a href="<?=$buildUrl($currentPage+1)?>" class="btn btn-outline-primary btn-sm rounded-circle px-2 <?=$currentPage>=$totalPages?'disabled':''?>"><i class="bi bi-chevron-right"></i></a>
-            </div>
-            <?php endif; ?>
-        <?php endif; ?>
+        <div id="searchResultsContainer"><?php require __DIR__.'/search-results.php'; ?></div>
     </div>
 </section>
-<?php $content = ob_get_clean(); require __DIR__.'/layout.php'; ?>
+<script>
+(function() {
+    var pending = setInterval(function() {
+        if (typeof jQuery === 'undefined' || typeof BASE_URL === 'undefined') return;
+        clearInterval(pending);
+        $(function() {
+            var searchTimeout;
+            var $form = $('#searchForm');
+            var $q = $form.find('[name=q]');
+            var $familia = $form.find('[name=familia]');
+            var $marca = $form.find('[name=marca]');
+            var $container = $('#searchResultsContainer');
+
+            function doSearch() {
+                var params = {};
+                var q = $q.val().trim();
+                if (q) params.q = q;
+                if ($familia.val()) params.familia = $familia.val();
+                if ($marca.val()) params.marca = $marca.val();
+                var hasFilters = q || $familia.val() || $marca.val();
+                var qs = $.param(params);
+                history.replaceState(null, '', BASE_URL + 'buscar' + (qs ? '?' + qs : ''));
+                $('#clearSearchBtn').toggleClass('d-none', !hasFilters);
+                $.ajax({
+                    url: BASE_URL + 'buscar' + (qs ? '?' + qs : ''),
+                    beforeSend: function(xhr) { xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest'); },
+                    success: function(html) { $container.html(html); }
+                });
+            }
+
+            $q.on('input', function() {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(doSearch, 300);
+            });
+            $familia.on('change', doSearch);
+            $marca.on('change', doSearch);
+            $form.on('submit', function(e) { e.preventDefault(); doSearch(); });
+            $container.on('click', '.search-page-link', function(e) {
+                e.preventDefault();
+                var url = $(this).attr('href');
+                history.replaceState(null, '', url);
+                $.ajax({
+                    url: url,
+                    beforeSend: function(xhr) { xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest'); },
+                    success: function(html) { $container.html(html); }
+                });
+            });
+        });
+    }, 50);
+})();
+</script>
+<?php
+$content = ob_get_clean();
+require __DIR__.'/layout.php';

@@ -79,6 +79,7 @@ class CatalogController extends Controller
         $page = max(1, (int)($_GET['page'] ?? 1));
         $perPage = 12;
         $offset = ($page - 1) * $perPage;
+        $isAjax = !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
 
         if ($familiaId || $marcaId || $search) {
             $total = $producto->filterAll($search, $familiaId, $marcaId, 0, 0, true);
@@ -88,7 +89,8 @@ class CatalogController extends Controller
             $productos = $producto->allWithRelations('p.orden ASC', $perPage, $offset);
         }
 
-        $this->render('catalog/search', [
+        $view = $isAjax ? 'catalog/search-results' : 'catalog/search';
+        $this->render($view, [
             'productos' => $productos,
             'familias' => $familia->activas(),
             'marcas' => $marca->activas(),
