@@ -36,9 +36,7 @@
             </div>
         </form>
 
-        <?php if ($search||$selectedFamilia||$selectedMarca): ?>
-            <p class="text-muted mb-3"><?=count($productos)?> resultado(s)</p>
-        <?php endif; ?>
+        <p class="text-muted mb-3"><?=$total?> resultado(s) — Página <?=$currentPage?> de <?=$totalPages?></p>
 
         <?php if (empty($productos)): ?>
             <div class="text-center py-5" data-aos="fade-up">
@@ -69,6 +67,24 @@
                     </div>
                 <?php endforeach; ?>
             </div>
+            <?php if ($totalPages > 1): ?>
+            <div class="d-flex justify-content-center align-items-center gap-2 mt-4">
+                <?php
+                $buildUrl = function($p) use ($search, $selectedFamilia, $selectedMarca) {
+                    $params = ['page' => $p];
+                    if ($search) $params['q'] = $search;
+                    if ($selectedFamilia) $params['familia'] = $selectedFamilia;
+                    if ($selectedMarca) $params['marca'] = $selectedMarca;
+                    return BASE_URL . 'buscar?' . http_build_query($params);
+                };
+                ?>
+                <a href="<?=$buildUrl($currentPage-1)?>" class="btn btn-outline-primary btn-sm rounded-circle px-2 <?=$currentPage<=1?'disabled':''?>"><i class="bi bi-chevron-left"></i></a>
+                <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                    <a href="<?=$buildUrl($i)?>" class="btn btn-sm rounded-circle px-2 <?=$i==$currentPage?'btn-primary':'btn-outline-primary'?>"><?=$i?></a>
+                <?php endfor; ?>
+                <a href="<?=$buildUrl($currentPage+1)?>" class="btn btn-outline-primary btn-sm rounded-circle px-2 <?=$currentPage>=$totalPages?'disabled':''?>"><i class="bi bi-chevron-right"></i></a>
+            </div>
+            <?php endif; ?>
         <?php endif; ?>
     </div>
 </section>

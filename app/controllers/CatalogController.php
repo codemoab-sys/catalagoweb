@@ -76,11 +76,16 @@ class CatalogController extends Controller
         $marca = new Marca();
         $familiaId = $_GET['familia'] ?? '';
         $marcaId = $_GET['marca'] ?? '';
+        $page = max(1, (int)($_GET['page'] ?? 1));
+        $perPage = 12;
+        $offset = ($page - 1) * $perPage;
 
         if ($familiaId || $marcaId || $search) {
-            $productos = $producto->filterAll($search, $familiaId, $marcaId);
+            $total = $producto->filterAll($search, $familiaId, $marcaId, 0, 0, true);
+            $productos = $producto->filterAll($search, $familiaId, $marcaId, $perPage, $offset);
         } else {
-            $productos = $producto->allWithRelations('p.orden ASC');
+            $total = $producto->countAll();
+            $productos = $producto->allWithRelations('p.orden ASC', $perPage, $offset);
         }
 
         $this->render('catalog/search', [
@@ -90,6 +95,9 @@ class CatalogController extends Controller
             'search' => $search,
             'selectedFamilia' => $familiaId,
             'selectedMarca' => $marcaId,
+            'currentPage' => $page,
+            'totalPages' => max(1, ceil($total / $perPage)),
+            'total' => $total,
         ]);
     }
 
@@ -105,26 +113,31 @@ class CatalogController extends Controller
     {
         $search = $_GET['q'] ?? '';
         $categoria = $_GET['categoria'] ?? '';
+        $page = max(1, (int)($_GET['page'] ?? 1));
+        $perPage = 12;
+        $offset = ($page - 1) * $perPage;
         $model = new BuenaPractica();
 
-        if ($search || $categoria) {
-            $sql = "SELECT * FROM buenas_practicas WHERE estado = 1";
-            $params = [];
-            if ($search) {
-                $sql .= " AND (titulo LIKE ? OR descripcion LIKE ?)";
-                $like = "%$search%";
-                $params[] = $like;
-                $params[] = $like;
-            }
-            if ($categoria) {
-                $sql .= " AND categoria = ?";
-                $params[] = $categoria;
-            }
-            $sql .= " ORDER BY created_at DESC";
-            $items = $model->query($sql, $params);
-        } else {
-            $items = $model->where('estado', 1, 'created_at DESC');
+        $countSql = "SELECT COUNT(*) as total FROM buenas_practicas WHERE estado = 1";
+        $sql = "SELECT * FROM buenas_practicas WHERE estado = 1";
+        $params = [];
+        if ($search) {
+            $clause = " AND (titulo LIKE ? OR descripcion LIKE ?)";
+            $like = "%$search%";
+            $params[] = $like;
+            $params[] = $like;
+            $countSql .= $clause;
+            $sql .= $clause;
         }
+        if ($categoria) {
+            $clause = " AND categoria = ?";
+            $params[] = $categoria;
+            $countSql .= $clause;
+            $sql .= $clause;
+        }
+        $total = $model->queryFirst($countSql, $params)['total'];
+        $sql .= " ORDER BY created_at DESC LIMIT " . (int)$perPage . " OFFSET " . (int)$offset;
+        $items = $model->query($sql, $params);
 
         $familias = (new Familia())->activas();
         $this->render('catalog/buenas-practicas', [
@@ -132,6 +145,9 @@ class CatalogController extends Controller
             'search' => $search,
             'selectedCategoria' => $categoria,
             'familias' => $familias,
+            'currentPage' => $page,
+            'totalPages' => max(1, ceil($total / $perPage)),
+            'total' => $total,
         ]);
     }
 }

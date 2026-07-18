@@ -23,15 +23,20 @@ class Producto extends Model
         return $this->query("SELECT * FROM producto_imagenes WHERE producto_id = ? AND estado = 1 ORDER BY orden ASC", [$productoId]);
     }
 
-    public function allWithRelations($orderBy = 'p.orden ASC')
+    public function allWithRelations($orderBy = 'p.orden ASC', $limit = 0, $offset = 0)
     {
-        return $this->query("
-            SELECT p.*, f.nombre as familia_nombre, f.slug as familia_slug, m.nombre as marca_nombre
-            FROM productos p
-            LEFT JOIN familias f ON p.familia_id = f.id
-            LEFT JOIN marcas m ON p.marca_id = m.id
-            ORDER BY {$orderBy}
-        ");
+        $sql = "SELECT p.*, f.nombre as familia_nombre, f.slug as familia_slug, m.nombre as marca_nombre
+                FROM productos p
+                LEFT JOIN familias f ON p.familia_id = f.id
+                LEFT JOIN marcas m ON p.marca_id = m.id
+                ORDER BY {$orderBy}";
+        if ($limit) $sql .= " LIMIT " . (int)$limit . " OFFSET " . (int)$offset;
+        return $this->query($sql);
+    }
+
+    public function countAll()
+    {
+        return $this->queryFirst("SELECT COUNT(*) as total FROM productos p WHERE p.estado = 1")['total'];
     }
 
     public function byFamilia($familiaId, $search = '', $marcaId = '')
@@ -83,9 +88,10 @@ class Producto extends Model
         return $this->query($sql, [$s, $s, $s, $s]);
     }
 
-    public function filterAll($search = '', $familiaId = '', $marcaId = '')
+    public function filterAll($search = '', $familiaId = '', $marcaId = '', $limit = 0, $offset = 0, $countOnly = false)
     {
-        $sql = "SELECT p.*, f.nombre as familia_nombre, f.slug as familia_slug, m.nombre as marca_nombre
+        $select = $countOnly ? "COUNT(*) as total" : "p.*, f.nombre as familia_nombre, f.slug as familia_slug, m.nombre as marca_nombre";
+        $sql = "SELECT {$select}
                 FROM productos p
                 LEFT JOIN familias f ON p.familia_id = f.id
                 LEFT JOIN marcas m ON p.marca_id = m.id
@@ -108,7 +114,10 @@ class Producto extends Model
             $params[] = $marcaId;
         }
 
+        if ($countOnly) return $this->queryFirst($sql, $params)['total'];
+
         $sql .= " ORDER BY p.orden ASC, p.nombre_comercial ASC";
+        if ($limit) $sql .= " LIMIT " . (int)$limit . " OFFSET " . (int)$offset;
         return $this->query($sql, $params);
     }
 
