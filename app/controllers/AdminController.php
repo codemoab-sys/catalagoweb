@@ -50,8 +50,8 @@ class AdminController extends Controller
         $pass = $_POST['pass'] ?? '';
 
         $usuario = (new Usuario())->queryFirst(
-            "SELECT * FROM usuarios WHERE estado = 1 AND (email = ? OR nombre = ? OR usuario = ?) LIMIT 1",
-            [$user, $user, $user]
+            "SELECT * FROM usuarios WHERE estado = 1 AND (email = ? OR nombre = ?) LIMIT 1",
+            [$user, $user]
         );
 
         if ($usuario) {
