@@ -37,8 +37,11 @@
             <li class="nav-item"><a href="<?= BASE_URL ?>admin/logout" class="nav-link text-danger"><i class="bi bi-box-arrow-right me-2"></i>Salir</a></li>
         </ul>
     </nav>
-    <main class="main-content flex-grow-1 p-4">
+    <main class="main-content flex-grow-1">
+        <div class="d-md-none" style="height:54px"></div>
+        <div class="p-4">
         <?= $content ?? '' ?>
+        </div>
     </main>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
