@@ -17,7 +17,10 @@
     </button>
     <div id="sidebarOverlay" class="d-md-none" style="position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:99;display:none"></div>
     <nav class="sidebar bg-dark text-white" id="adminSidebar">
-        <div class="sidebar-header p-3 text-center">
+        <div class="sidebar-header p-3 text-center position-relative">
+            <button id="sidebarClose" class="btn btn-sm btn-outline-light d-md-none position-absolute" style="top:8px;right:8px;border-radius:50%;padding:2px 6px;" aria-label="Cerrar menú">
+                <i class="bi bi-x-lg"></i>
+            </button>
             <img src="<?= BASE_URL ?>DROFARSAC-LOGO.png" alt="DROFAR" height="40" style="filter:brightness(0)invert(1)">
             <small class="text-muted d-block mt-1">Panel Admin</small>
             <button id="darkModeToggle" class="btn btn-sm btn-outline-light mt-2 w-100" title="Modo oscuro/claro">
@@ -70,13 +73,15 @@
     var sidebar = document.getElementById('adminSidebar');
     var overlay = document.getElementById('sidebarOverlay');
     if (toggle && sidebar) {
-        function closeSidebar() { sidebar.classList.remove('show'); if (overlay) overlay.style.display = 'none'; }
-        function openSidebar() { sidebar.classList.add('show'); if (overlay) overlay.style.display = 'block'; }
+        function closeSidebar() { sidebar.classList.remove('show'); if (overlay) overlay.style.display = 'none'; toggle.style.display = ''; }
+        function openSidebar() { sidebar.classList.add('show'); if (overlay) overlay.style.display = 'block'; toggle.style.display = 'none'; }
         toggle.addEventListener('click', function() {
             if (sidebar.classList.contains('show')) closeSidebar();
             else openSidebar();
         });
         if (overlay) overlay.addEventListener('click', closeSidebar);
+        var closeBtn = document.getElementById('sidebarClose');
+        if (closeBtn) closeBtn.addEventListener('click', closeSidebar);
         sidebar.querySelectorAll('.nav-link').forEach(function(link) {
             link.addEventListener('click', closeSidebar);
         });
