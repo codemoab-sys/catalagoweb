@@ -35,7 +35,6 @@
             <li class="nav-item"><a href="<?= BASE_URL ?>admin/marcas" class="nav-link text-white <?= strpos($u,'/admin/marcas') !== false ? 'active' : '' ?>"><i class="bi bi-tag me-2"></i>Marcas</a></li>
             <li class="nav-item"><a href="<?= BASE_URL ?>admin/banners" class="nav-link text-white <?= strpos($u,'/admin/banners') !== false ? 'active' : '' ?>"><i class="bi bi-images me-2"></i>Banners</a></li>
             <li class="nav-item"><a href="<?= BASE_URL ?>admin/usuarios" class="nav-link text-white <?= strpos($u,'/admin/usuarios') !== false ? 'active' : '' ?>"><i class="bi bi-people me-2"></i>Usuarios</a></li>
-            <li class="nav-item"><a href="<?= BASE_URL ?>admin/buenas-practicas" class="nav-link text-white <?= strpos($u,'/admin/buenas-practicas') !== false ? 'active' : '' ?>"><i class="bi bi-award me-2"></i>Buenas Prácticas</a></li>
             <li class="nav-item mt-3"><a href="<?= BASE_URL ?>" target="_blank" class="nav-link text-white"><i class="bi bi-eye me-2"></i>Ver Catálogo</a></li>
             <li class="nav-item"><a href="<?= BASE_URL ?>admin/logout" class="nav-link text-danger"><i class="bi bi-box-arrow-right me-2"></i>Salir</a></li>
         </ul>
