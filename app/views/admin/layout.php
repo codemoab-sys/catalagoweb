@@ -12,7 +12,11 @@
 </head>
 <body>
 <div class="d-flex" style="min-height:100vh">
-    <nav class="sidebar bg-dark text-white">
+    <button id="sidebarToggle" class="btn btn-dark d-md-none position-fixed" style="top:10px;left:10px;z-index:200;border-radius:10px;padding:6px 12px;" aria-label="Abrir menú">
+        <i class="bi bi-list fs-4"></i>
+    </button>
+    <div id="sidebarOverlay" class="d-md-none" style="position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:99;display:none"></div>
+    <nav class="sidebar bg-dark text-white" id="adminSidebar">
         <div class="sidebar-header p-3 text-center">
             <img src="<?= BASE_URL ?>DROFARSAC-LOGO.png" alt="DROFAR" height="40" style="filter:brightness(0)invert(1)">
             <small class="text-muted d-block mt-1">Panel Admin</small>
@@ -55,6 +59,25 @@
         localStorage.setItem('adminDarkMode', !isDark);
         toggle.innerHTML = isDark ? '<i class="bi bi-moon-stars"></i> <span>Oscuro</span>' : '<i class="bi bi-sun"></i> <span>Claro</span>';
     });
+})();
+</script>
+<script>
+(function() {
+    var toggle = document.getElementById('sidebarToggle');
+    var sidebar = document.getElementById('adminSidebar');
+    var overlay = document.getElementById('sidebarOverlay');
+    if (toggle && sidebar) {
+        function closeSidebar() { sidebar.classList.remove('show'); if (overlay) overlay.style.display = 'none'; }
+        function openSidebar() { sidebar.classList.add('show'); if (overlay) overlay.style.display = 'block'; }
+        toggle.addEventListener('click', function() {
+            if (sidebar.classList.contains('show')) closeSidebar();
+            else openSidebar();
+        });
+        if (overlay) overlay.addEventListener('click', closeSidebar);
+        sidebar.querySelectorAll('.nav-link').forEach(function(link) {
+            link.addEventListener('click', closeSidebar);
+        });
+    }
 })();
 </script>
 <script src="<?= BASE_URL ?>public/js/admin.js?v=<?= ASSET_VERSION ?>"></script>
